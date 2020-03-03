@@ -3,26 +3,32 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
-import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.AutonMethods;
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.DriveConstants;
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.MecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.RobotMechBase;
 
 @Config
 @Autonomous(group = "drive")
 public class Test1 extends LinearOpMode {
-    public static double DISTANCE = 48;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDriveBase drive = new MecanumDriveBase(hardwareMap);
+        RobotMechBase mech = new RobotMechBase(hardwareMap);
+        AutonMethods autonMethods = new AutonMethods();
 
         drive.setPoseEstimate( new Pose2d(0,0,0));
+
+        //TODO: test this, the lift should go up for 1 sec and stop
+        autonMethods.LiftArm(1000,1);
+        autonMethods.StopLiftArm();
+        autonMethods.SideArm(1,1,AutonMethods.sarmclose);
 
         Trajectory trajectory1 = new TrajectoryBuilder(drive.getPoseEstimate(), false, DriveConstants.BASE_CONSTRAINTS)
                 .splineToConstantHeading(new Pose2d(24,24))
