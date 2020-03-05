@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.RobotHardware.MecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.MecanumDriveBasePID;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -20,7 +20,7 @@ public class StraightTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        MecanumDriveBase drive = new MecanumDriveBase(hardwareMap);
+        MecanumDriveBasePID drive = new MecanumDriveBasePID(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
                 .forward(DISTANCE)

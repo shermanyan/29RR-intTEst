@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.drive.RobotHardware.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.RobotHardware.MecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.RobotHardware.MecanumDriveBasePID;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
     private String catName;
     private CustomVariable catVar;
 
-    private MecanumDriveBase drive;
+    private MecanumDriveBasePID drive;
 
     private static MotionProfile generateProfile(boolean movingForward) {
         MotionState start = new MotionState(movingForward ? 0 : DISTANCE, 0, 0, 0);
@@ -134,7 +134,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new MecanumDriveBase(hardwareMap);
+        drive = new MecanumDriveBasePID(hardwareMap);
 
         addPidVariable();
 

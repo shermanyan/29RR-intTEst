@@ -49,7 +49,7 @@ import static org.firstinspires.ftc.teamcode.drive.RobotHardware.DriveConstants.
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class MecanumDriveBase extends MecanumDrive {
+public class MecanumDriveBasePID extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(3, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(5, 0, 0);
 
@@ -78,7 +78,7 @@ public class MecanumDriveBase extends MecanumDrive {
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
 
-    public MecanumDriveBase(HardwareMap hardwareMap) {
+    public MecanumDriveBasePID(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH);
 
         dashboard = FtcDashboard.getInstance();

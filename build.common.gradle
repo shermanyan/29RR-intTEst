@@ -121,6 +121,7 @@ android {
 
 repositories {
     flatDir {
+        jcenter()
         dirs rootProject.file('libs')
     }
 }
