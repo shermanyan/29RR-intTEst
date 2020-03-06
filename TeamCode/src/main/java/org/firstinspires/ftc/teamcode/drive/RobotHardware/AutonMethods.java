@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.drive.RobotHardware;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +21,8 @@ import static java.lang.Math.sqrt;
 
 
 public class AutonMethods extends LinearOpMode {
+
+    MecanumDriveBasePID drive = new MecanumDriveBasePID(hardwareMap);
 
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
@@ -93,9 +98,6 @@ public class AutonMethods extends LinearOpMode {
     public int cam1 = 1;
     public int cam2 = 2;
 
-
-
-
     public void robotStartup(){
         motorFrontRight = hardwareMap.get(DcMotor.class, "frontRight");
         motorFrontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -130,10 +132,11 @@ public class AutonMethods extends LinearOpMode {
         spinL.setDirection(CRServo.Direction.REVERSE);
         GripRight.setDirection(Servo.Direction.FORWARD);
         GripLeft.setDirection(Servo.Direction.REVERSE);
-        Arm1.setDirection(Servo.Direction.REVERSE);
+
+        Arm1.setDirection(Servo.Direction.FORWARD);
         Arm2.setDirection(Servo.Direction.REVERSE);
         Arm3.setDirection(Servo.Direction.REVERSE);
-        Arm4.setDirection(Servo.Direction.REVERSE);
+        Arm4.setDirection(Servo.Direction.FORWARD);
 
         platformR = hardwareMap.get(Servo.class, "platformR");
         platformL = hardwareMap.get(Servo.class, "platformL");
@@ -155,8 +158,6 @@ public class AutonMethods extends LinearOpMode {
     }
 
 
-
-
     //Detector Methods
 
     public void detectorstartup(int cam) {
@@ -171,7 +172,7 @@ public class AutonMethods extends LinearOpMode {
 
         }
 
-        skystoneDetectorService skystoneDetectorService = new skystoneDetectorService(webcam);
+        skystoneDetectorService DetectorService = new skystoneDetectorService(webcam);
 
     }
 
@@ -180,10 +181,10 @@ public class AutonMethods extends LinearOpMode {
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //       webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Logitech"), cameraMonitorViewId);
 
-        skystoneDetectorService skystoneDetectorService = new skystoneDetectorService(webcam);
-        valLeft = skystoneDetectorService.getValLeft();
-        valMid = skystoneDetectorService.getValMid();
-        valRight = skystoneDetectorService.getValRight();
+        skystoneDetectorService DetectorService = new skystoneDetectorService(webcam);
+        valLeft = DetectorService.getValLeft();
+        valMid = DetectorService.getValMid();
+        valRight = DetectorService.getValRight();
         int pos = 1;
 
         // determine which one has skystone
@@ -197,6 +198,212 @@ public class AutonMethods extends LinearOpMode {
         return pos;
     }
 
+    public int sky1Pos(){
+        int pos = 0;
+        if (opModeIsActive() && findSkystonePosActive() == 1) {
+            pos = 1;
+
+        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+            pos  = 2;
+
+        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+            pos = 3;
+
+        }
+        return pos;
+
+    }
+
+    public int sky2Pos(){
+        int pos = 0;
+
+     if (opModeIsActive() && findSkystonePosActive() == 1) {
+        pos = 4;
+
+    } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+        pos  = 5;
+
+    } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+         pos = 6;
+     }
+        return pos;
+
+    }
+
+    //Position Calling Methods
+// put the x,y, for each of the skystone positions
+
+//    public String[] skyPosDet(){
+//        String [] skypos;
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            skypos = ((new Pose2d(0,0,0)));
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            skypos = String.valueOf((new Pose2d(0,0,0)));
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            skypos = String.valueOf((new Pose2d(0,0,0)));
+//        }
+//        return skypos;
+//    }
+
+
+
+//    {
+//        // declaring and initializing 2D array
+//        int arr[][] = { {2,7,9},{3,6,1},{7,4,2} };
+//
+//        // printing 2D array
+//        for (int i=0; i< 3 ; i++)
+//        {
+//            for (int j=0; j < 3 ; j++)
+//                System.out.print(arr[i][j] + " ");
+//
+//            System.out.println();
+//        }
+//    }
+
+
+//    public int[] skyPosDet2(){
+//        // set below array with the position of the 3 skystone
+//        int[] posArray1 = {2,1};
+//        int[] posArray2 = {2,1};
+//        int[] posArray3 = {2,1};
+//
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            posArray1[0] = 0;
+//            //   skypos = ((new Pose2d(0,0,0)));
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            posArray2[1] = 0;
+////            skypos = String.valueOf((new Pose2d(0,0,0)));
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            posArray3[0] = 0;
+//            //          skypos = String.valueOf((new Pose2d(0,0,0)));
+//        }
+//
+//
+//        return skyposArray;
+//    }
+
+//    public int[] sky1Pos(){
+//        // : set below arrays with the position of the First 3 skystone XY Positons
+//        int[] skyPos1 = {2,0};
+//        int[] skyPos2 = {3,0};
+//        int[] skyPos3 = {4,0};
+//
+//        int [] pos = {0,0};
+//
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            pos = skyPos1;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            pos  = skyPos2;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            pos = skyPos3;
+//
+//        }
+//
+//
+//        return pos ;
+//    }
+//    public int sky1Pos(){
+//        // : set below arrays with the position of the First 3 skystone XY Positons
+//        int skyPos1x = 1;
+//        int skyPos1y = 1;
+//        int skyPos2x = 2;
+//        int skyPos2y = 2;
+//        int skyPos3x = 3;
+//        int skyPos3y = 3;
+//
+//        int posx = 0 ;
+//        int posy = 0 ;
+//
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            posx = skyPos1x;
+//            posy = skyPos1y;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            posx = skyPos2x;
+//            posy = skyPos2y;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            posx = skyPos3x;
+//            posy = skyPos3y;
+//        }
+//
+//
+//        return posx + posy;
+//    }
+
+//    public int[] sky2Pos(){
+//        // : set below arrays with the position of the SECOND 3 skystone XY Positons
+//
+//        int[] skyPos4 = {2,0};
+//        int[] skyPos5 = {3,0};
+//        int[] skyPos6 = {4,0};
+//
+//        int [] pos2 = {0,0};
+//
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            pos2 = skyPos4;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            pos2  = skyPos5;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            pos2 = skyPos6;
+//
+//        }
+//
+//
+//        return pos2 ;
+//    }
+
+//    public int sky2Pos(){
+//
+//        if (sky1Pos()==1)
+//        // : set below arrays with the position of the SECOND 3 skystone XY Positons
+//        int skyPos4x = 1;
+//        int skyPos4y = 1;
+//        int skyPos5x = 2;
+//        int skyPos5y = 2;
+//        int skyPos6x = 3;
+//        int skyPos6y = 3;
+//
+//        int posx = 0 ;
+//        int posy = 0 ;
+//
+//        if (opModeIsActive() && findSkystonePosActive() == 1) {
+//            posx = skyPos4x;
+//            posy = skyPos4y;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 2) {
+//            posx = skyPos5x;
+//            posy = skyPos5y;
+//
+//        } else if (opModeIsActive() && findSkystonePosActive() == 3) {
+//            posx = skyPos6x;
+//            posy = skyPos6y;
+//        }
+//
+//
+//        return posx + posy;
+//    }
+
+
+//    public static void main(String args[])
+//    {
+//        // declaring and initializing 2D array
+//        int arr[][] = { {2,7,9},{3,6,1},{7,4,2} };
+//
+//        // printing 2D array
+//        for (int i=0; i< 3 ; i++)
+//        {
+//            for (int j=0; j < 3 ; j++)
+//                System.out.print(arr[i][j] + " ");
+//
+//            System.out.println();
+//        }
+//    }
 
     //LiftArm Methods
     public void getLift(){
